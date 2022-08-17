@@ -1,0 +1,15 @@
+---
+# tasks file for aws-cloud-watch
+# Install the pacakge
+- name: Install rpm for CentOS
+  yum:
+    name: "https://s3.amazonaws.com/amazoncloudwatch-agent/{{ ansible_distribution | lower }}/amd64/latest/amazon-cloudwatch-agent.rpm"
+    state: present
+  when: ansible_distribution == 'Centos'
+  become: true
+- name: Install rpm for Amazon_linux
+  yum:
+    name: "https://s3.amazonaws.com/amazoncloudwatch-agent/amazon_linux/amd64/latest/amazon-cloudwatch-agent.rpm"
+    state: present
+  when: ansible_distribution == 'Amazon'
+  become: true

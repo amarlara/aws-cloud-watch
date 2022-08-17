@@ -1,0 +1,22 @@
+---
+- name: Update Branch Protection
+  hosts: localhost
+  gather_facts: no
+  vars:
+    OWNER: "<OWNER>"
+    REPO: "<REPO>"
+    BRANCHES: ["master"]
+    TOKEN: "<TOKEN>"
+  tasks:
+    - name: Call API to update branch protection
+      ansible.builtin.uri:
+        url: "https://api.github.com/repos/{{ OWNER }}/{{ REPO }}/branches/{{ item }}/protection"
+        method: PUT
+        body: '{"required_status_checks": null,"enforce_admins": null,"required_pull_request_reviews": {"required_approving_review_count": 1},"restrictions":null}'
+        headers:
+          Accept: "application/vnd.github+json"
+          Authorization: "token {{ TOKEN }}"
+          Content-Type: "application/x-www-form-urlencoded"
+      register: result
+      with_items:
+        - "{{BRANCHES}}"
